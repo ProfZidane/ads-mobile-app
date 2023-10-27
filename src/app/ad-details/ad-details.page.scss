@@ -1,0 +1,43 @@
+.card {
+    border-radius: 20px;
+    height: 400px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    color: white;
+  }
+  
+
+  ion-button.see-more {
+    color: white;
+    --background: orangered;
+}
+
+
+  ion-card-title, ion-card-subtitle {
+    color: white;
+  }
+
+
+  .p-1 {
+    padding: 1.5rem;
+  }
+
+  .img {
+    border: solid;
+    height: 35vh;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 0;
+  }
+  
+  .desc {
+    border: solid none;
+    border-top-left-radius: 50px;
+    border-top-right-radius: 50px;
+    background-color: white;
+    padding: 2rem;
+    height: 62vh;
+    z-index: 1;
+    position: relative;
+    bottom: 50px;
+  }

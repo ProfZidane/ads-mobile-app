@@ -1,0 +1,60 @@
+
+
+
+#e {
+    border: solid RED;
+    background-color: beige;
+    color: beige;
+}
+
+.bord {
+    border: solid;
+}
+
+.header {
+    padding: 5rem;
+    height: 35vh;
+    background-color: beige;
+}
+
+.content {
+    
+    height: 65vh;
+    padding: 2rem;
+}
+
+
+.footer {
+    transform: translateY(50%);
+}
+
+.title {
+    font-weight: 500;
+    font-size: xx-large;
+    color: rgb(78, 77, 77);
+    position: relative;
+    top: 20px;
+}
+
+.title > span {
+    color: orangered;
+    
+}
+
+
+.mt-5 {
+    margin-top: 5rem
+}
+
+.img-round {
+    border: solid;
+    border-radius: 100%;
+    padding: 1rem;
+    border-color: orangered;
+}
+
+
+.btn-orange {
+    color: white;
+    --background: orangered;
+}

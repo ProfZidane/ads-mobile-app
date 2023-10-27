@@ -1,0 +1,44 @@
+
+
+<ion-content [fullscreen]="true">
+  
+  <ion-grid class="header" align="center">
+    <ion-row>
+      <ion-col>
+
+        <img src="assets/imgs/8731675-modified.png" width="45%" class="img-round" alt="" srcset="">
+        <h1 class="title">
+          Be A 
+          <span>Member</span>
+        </h1>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid class="content">
+    <ion-row>      
+      <ion-col size="12">
+        <ion-input label="Email Adress" name="email" [(ngModel)]="data.email" label-placement="floating" fill="outline" placeholder="Your email adress"></ion-input>
+      </ion-col>
+      <ion-col size="12">
+        <ion-input label="Password" name="password" type="password" [(ngModel)]="data.password" label-placement="floating" fill="outline" placeholder="Your password"></ion-input>
+      </ion-col>
+      <ion-col size="12">
+        <ion-button class="btn-orange" expand="block" (click)="signUp()">Sign Up</ion-button>
+      </ion-col>
+     
+    </ion-row>
+
+    <ion-row>
+      <ion-col size="12" class="mt-5">
+        <p>
+          You have an account? <a routerLink="/login">Log In</a>
+        </p>
+      </ion-col>
+    </ion-row>
+
+  </ion-grid>
+
+
+
+</ion-content>
