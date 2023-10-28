@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { signOut } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { getAuth } from '@angular/fire/auth';
 import { Token } from 'src/app/models/Token';
 
 @Injectable({
@@ -38,6 +40,7 @@ export class BaseService {
     if (local) {
       localStorage.removeItem('auth-xxx-adv');
       this.router.navigateByUrl('/');
+      signOut(getAuth());
     }
   }
 }

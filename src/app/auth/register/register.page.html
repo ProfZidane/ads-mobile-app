@@ -24,7 +24,14 @@
         <ion-input label="Password" name="password" type="password" [(ngModel)]="data.password" label-placement="floating" fill="outline" placeholder="Your password"></ion-input>
       </ion-col>
       <ion-col size="12">
-        <ion-button class="btn-orange" expand="block" (click)="signUp()">Sign Up</ion-button>
+        <small class="text-warning" *ngIf="status.error">
+          Be attention with your credentials (email and password)! <br>
+          Password should be at least 6 characters          
+        </small>
+        <ion-button class="btn-orange" expand="block" (click)="signUp()" *ngIf="!status.loading">Sign Up</ion-button>
+        <ion-button class="btn-orange" expand="block" disabled *ngIf="status.loading">
+          <ion-spinner></ion-spinner>
+        </ion-button>
       </ion-col>
      
     </ion-row>

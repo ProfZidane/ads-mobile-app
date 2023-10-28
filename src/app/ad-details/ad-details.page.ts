@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Firestore, collectionData, collection, doc, getDoc, query, deleteDoc } from '@angular/fire/firestore';
+import { Ads } from '../models/Ads';
+import { Auth } from "@angular/fire/auth";
+import { AlertController } from '@ionic/angular';
+import { Location } from '@angular/common';
+import { ToastController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-ad-details',
@@ -10,15 +17,108 @@ export class AdDetailsPage implements OnInit {
 idAds!: string;
 img:string = "url('assets/imgs/ocean-3605547_1280.jpg')";
 
-  constructor(private route: ActivatedRoute) { }
+querySnapshot: any;
+Ad:Ads = {
+  title: "",
+  description: "",
+  type: "",
+  photo: "",
+  owner: "",
+  created_at: new Date().toLocaleDateString()
+};
+ownerName:string = "";
 
-  ngOnInit() {
+  constructor(private route: ActivatedRoute, private firestore: Firestore, private auth: Auth, private alertController: AlertController, private location: Location, private toastController: ToastController) { }
+
+  async ngOnInit() {   
+    
+  }
+
+  async ionViewDidEnter() {
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
       this.idAds = id;
-      console.log(this.idAds);      
+      console.log(this.idAds);  
+      
+      await this.getAd(this.idAds);
     }
+  }
+
+  async getAd(id: string) {
+    this.querySnapshot = await getDoc(doc(this.firestore, 'Ads', this.idAds));
+    this.Ad.title = this.querySnapshot.data().title;
+    this.Ad.description = this.querySnapshot.data().description;
+    this.Ad.owner = this.querySnapshot.data().owner;
+    this.Ad.photo = this.querySnapshot.data().photo;
+    this.Ad.created_at = this.querySnapshot.data().created_at;
+    this.Ad.type = this.querySnapshot.data().type;
     
+    this.getOwner();
+  }
+
+
+   getOwner() {
+    if (this.auth.currentUser && this.auth.currentUser.email) {
+      this.ownerName = this.auth.currentUser.email;
+    }
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Attention',
+      subHeader: 'Important message',
+      message: 'Are you sure to want delete this ad ?',
+      buttons: [
+        {
+          text: "No"
+        },
+        {
+          text: "Yes",
+          handler: async () => {
+            await this.deleteAd(alert);
+          }
+        }
+      ],
+    });
+
+    await alert.present();
+  }
+
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: position,
+      color: color
+    });
+
+    await toast.present();
+  }
+
+  async deleteAd(alert: HTMLIonAlertElement) {
+    await deleteDoc(doc(this.firestore, 'Ads', this.idAds)).then(
+      (s) => {
+        
+        alert.dismiss();
+
+        this.presentToast('bottom', "Ad deleted with success !", "success");
+
+        setTimeout(
+          () => {
+            this.location.back();            
+          },
+          1000
+        );
+        
+      }, (e) => {
+        
+        alert.dismiss();
+
+        this.presentToast('bottom', "An error occured when deleting operated !", "danger");
+        
+      }
+    );
   }
 
 }

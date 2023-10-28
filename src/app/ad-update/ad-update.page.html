@@ -3,14 +3,14 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Create Your Ads</ion-title>
+    <ion-title>Update Your Ads</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
   
   <h1 class="pt-1 pb-1" align="center">
-    <strong>Put Your <span style="color: orangered;">Thing Here</span> !</strong>
+    <strong>Modify Easly Your <span style="color: orangered;">Ads Here</span> !</strong>
   </h1>
 
 
@@ -20,19 +20,19 @@
       <ion-grid>
         <ion-row>
           <ion-col size="12">
-            <ion-input label="Title of Ads" name="title" [(ngModel)]="ad.title" label-placement="floating" fill="outline" placeholder="The Title of Ads"></ion-input>
+            <ion-input label="Title of Ads" name="title" [(ngModel)]="Ad.title" label-placement="floating" fill="outline" placeholder="The Title of Ads"></ion-input>
           </ion-col>
           <ion-col size="12">
             <ion-list>
               <ion-item>
-                <ion-select label="Ads's Type" placeholder="" name="type" [(ngModel)]="ad.type">
+                <ion-select label="Ads's Type" placeholder="" name="type" [(ngModel)]="Ad.type">
                   <ion-select-option *ngFor="let t of types" value="{{t}}">{{t|titlecase}}</ion-select-option>
                 </ion-select>
               </ion-item>
             </ion-list>
           </ion-col>
           <ion-col size="12">
-            <ion-textarea label="Description" name="description" [(ngModel)]="ad.description" labelPlacement="floating" placeholder="Enter text"></ion-textarea>
+            <ion-textarea label="Description" name="description" [(ngModel)]="Ad.description" labelPlacement="floating" placeholder="Enter text"></ion-textarea>
           </ion-col>
           <ion-col size="12">
             <!-- <ion-button expand="full">
@@ -41,11 +41,11 @@
               <input type="file" id="file-input"
                 accept="image/png, image/jpeg">
             </ion-button> -->
-            <ion-input label="URL's Picture" name="photo" [(ngModel)]="ad.photo" label-placement="floating" fill="outline" placeholder="URL of photo"></ion-input>
+            <ion-input label="URL's Picture" name="photo" [(ngModel)]="Ad.photo" label-placement="floating" fill="outline" placeholder="URL of photo"></ion-input>
 
           </ion-col>
           <ion-col size="12">
-            <ion-button class="btn-orange mt-5" expand="block"  *ngIf="!status.loading" (click)="saveAd()">Save Adv</ion-button>
+            <ion-button class="btn-orange mt-5" expand="block"  *ngIf="!status.loading" (click)="updateAd()">Update Adv</ion-button>
             <ion-button class="btn-orange mt-5" expand="block" disabled *ngIf="status.loading">
               <ion-spinner></ion-spinner>
             </ion-button>
