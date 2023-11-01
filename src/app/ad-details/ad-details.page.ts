@@ -27,7 +27,7 @@ Ad:Ads = {
   created_at: new Date().toLocaleDateString()
 };
 ownerName:string = "";
-
+ownerstatus = false;
   constructor(private route: ActivatedRoute, private firestore: Firestore, private auth: Auth, private alertController: AlertController, private location: Location, private toastController: ToastController) { }
 
   async ngOnInit() {   
@@ -41,7 +41,11 @@ ownerName:string = "";
       console.log(this.idAds);  
       
       await this.getAd(this.idAds);
+
+      this.ownerstatus = this.isMine();
     }
+
+    
   }
 
   async getAd(id: string) {
@@ -53,14 +57,14 @@ ownerName:string = "";
     this.Ad.created_at = this.querySnapshot.data().created_at;
     this.Ad.type = this.querySnapshot.data().type;
     
-    this.getOwner();
+    console.log(this.Ad);
+    
+    this.getOwner(this.Ad.owner);
   }
 
 
-   getOwner() {
-    if (this.auth.currentUser && this.auth.currentUser.email) {
-      this.ownerName = this.auth.currentUser.email;
-    }
+   getOwner(email: string) {
+    this.ownerName = email;
   }
 
   async presentAlert() {
@@ -119,6 +123,20 @@ ownerName:string = "";
         
       }
     );
+  }
+
+  isMine() {
+    const local = localStorage.getItem('auth-xxx-adv');
+    if (local) {
+      console.log(JSON.parse(local));
+      const jsonOwner = JSON.parse(local);
+
+      if (jsonOwner.email === this.ownerName) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
 }

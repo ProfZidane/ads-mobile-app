@@ -34,6 +34,7 @@ uid:any;
 
 
   async getAds() {
+    this.advertissements = [];
     this.status.loading = true;
 
     this.querySnapshot = await getDocs(collection(this.firestore, 'Ads'));

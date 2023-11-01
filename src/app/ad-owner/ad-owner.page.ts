@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Firestore, collectionData, collection, doc, getDoc, query, deleteDoc, where } from '@angular/fire/firestore';
+import { collection, query, where, getDocs, Firestore } from 'firebase/firestore';
+
 import { Ads } from '../models/Ads';
 import { Auth } from "@angular/fire/auth";
-import { getDocs } from 'firebase/firestore';
 import { BaseService } from '../services/auth/base.service';
 
 
@@ -20,7 +20,9 @@ export class AdOwnerPage implements OnInit {
   status = {
     loading: false,
   };
-  constructor(private route: ActivatedRoute, private firestore: Firestore, private auth: Auth, private authService: BaseService,) { }
+
+  firestore = Inject(Firestore)
+  constructor(private route: ActivatedRoute, private auth: Auth, private authService: BaseService,) { }
 
   ngOnInit() {
     this.getOwner();
@@ -48,10 +50,23 @@ export class AdOwnerPage implements OnInit {
   async getAdByOwner(id: string) {
     this.status.loading = true;
 
-    const myQuery = query(collection(this.firestore, 'Ads'), where('owner', '==', id));
-    let querySnapshot = await getDocs(myQuery);
+    const myCollection = collection(this.firestore, 'Ads');
+    const q = query(myCollection, where("type", "==", "Technology"));
+
+    getDocs(q)
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.id, " => ", doc.data());
+          // Ici, vous pouvez traiter les documents qui correspondent à votre requête.
+        });
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la récupération des documents : ", error);
+      });
+        
+    /* let querySnapshot = await getDocs(this.query);
+    
     querySnapshot.forEach((docElement: any) => {
-      console.log(docElement);
       
       this.advertissements.push(
         {id: docElement.id,
@@ -64,7 +79,7 @@ export class AdOwnerPage implements OnInit {
       );
     });
 
-    console.log(this.advertissements);
+    console.log(this.advertissements); */
     
     this.status.loading = false;
 

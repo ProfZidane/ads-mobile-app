@@ -27,7 +27,7 @@ export class BaseService {
   getOwnerID() {
     const local = localStorage.getItem('auth-xxx-adv');
     if (local) {
-      const id = JSON.parse(local)._id;
+      const id = JSON.parse(local).email;
       return id
     }
 

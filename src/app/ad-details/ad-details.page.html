@@ -21,11 +21,11 @@
     </p>
 
     <ion-button class="mt-5 see-more" expand="block">See More Ads</ion-button>
-    <ion-button class="" color="warning" expand="block" routerLink="/ad-update/{{idAds}}">
+    <ion-button class="" color="warning" expand="block" routerLink="/ad-update/{{idAds}}" *ngIf="ownerstatus">
       Edit Annonce &nbsp;
       <ion-icon name="create-outline"></ion-icon>
     </ion-button>
-    <ion-button class="" color="danger" expand="block" (click)="presentAlert()">
+    <ion-button class="" color="danger" expand="block" (click)="presentAlert()" *ngIf="ownerstatus">
       Delete Annonce &nbsp;
       <ion-icon name="trash-outline"></ion-icon>
     </ion-button>
