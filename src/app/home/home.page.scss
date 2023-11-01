@@ -14,6 +14,11 @@ ion-icon {
   color: white;
 }
 
+ion-spinner {
+  width: 100px;
+  height: 100px;
+}
+
 ion-button.btn {
   
   color: white;
@@ -37,5 +42,10 @@ ion-button.primary {
   
   background-repeat: no-repeat;
   color: white;
+}
+
+.center {
+  position: relative;
+  top: 300px;
 }
 

@@ -3,28 +3,31 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Ads Titile</ion-title>
+    <ion-title>{{Ad.title | titlecase}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
 
-  <div class="img" [style.background-image]="img">
+  <div class="img" [style.background-image]="'url('+''+Ad.photo+''+')'">
 
   </div>
   <ion-grid class="desc">
-    <h1><strong>Ads Title</strong></h1>
-    <small><em>M. Z</em></small> <br>
-    <small>September 2023</small>
+    <h1><strong>{{Ad.title | titlecase}}</strong></h1>
+    <small><em>{{ownerName|titlecase}}</em></small> <br>
+    <small>{{Ad.created_at }}</small>
     <p>
-      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Blanditiis culpa nostrum hic, minus expedita laborum eligendi corrupti consequuntur error voluptatum repudiandae debitis, nihil iste earum ullam corporis, unde aliquid quis?
-      Porro facilis dolor maiores unde non vel doloremque, amet earum adipisci error qui! Recusandae hic, modi ullam beatae dolores impedit non placeat sit? Architecto veritatis delectus assumenda esse, obcaecati unde.
+      {{ Ad.description }}
     </p>
 
     <ion-button class="mt-5 see-more" expand="block">See More Ads</ion-button>
-    <ion-button class="" color="warning" expand="block">
+    <ion-button class="" color="warning" expand="block" routerLink="/ad-update/{{idAds}}" *ngIf="ownerstatus">
       Edit Annonce &nbsp;
       <ion-icon name="create-outline"></ion-icon>
+    </ion-button>
+    <ion-button class="" color="danger" expand="block" (click)="presentAlert()" *ngIf="ownerstatus">
+      Delete Annonce &nbsp;
+      <ion-icon name="trash-outline"></ion-icon>
     </ion-button>
   </ion-grid>
 

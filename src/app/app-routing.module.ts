@@ -35,6 +35,14 @@ const routes: Routes = [
     loadChildren: () => import('./ad-insert/ad-insert.module').then( m => m.AdInsertPageModule),
     canActivate: [AuthorityGuard]
   },
+  {
+    path: 'ad-update/:id',
+    loadChildren: () => import('./ad-update/ad-update.module').then( m => m.AdUpdatePageModule)
+  },
+  {
+    path: 'ad-owner/:uid',
+    loadChildren: () => import('./ad-owner/ad-owner.module').then( m => m.AdOwnerPageModule)
+  },
 ];
 
 @NgModule({

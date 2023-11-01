@@ -4,6 +4,8 @@ import { BaseService } from '../services/auth/base.service';
 
 
 import { Firestore, setDoc, doc, collection } from '@angular/fire/firestore';
+import { ToastController } from '@ionic/angular';
+import { Types } from '../datas/Types';
 
 
 @Component({
@@ -20,21 +22,68 @@ ad: Ads = {
   owner: "",
   created_at: new Date().toLocaleDateString()
 };
-  constructor(private AuthBaseService: BaseService, private firestore: Firestore) { }
 
-  ngOnInit() {
+status = {
+  loading: false
+};
+
+types!:Array<string>;
+
+  constructor(private AuthBaseService: BaseService, private firestore: Firestore, private toastController: ToastController) { }
+
+
+  ngOnInit(): void {
+    
   }
 
 
+  ionViewDidEnter() {
+    this.types = Types;
+  }
+
+
+  async presentToast(position: 'top' | 'middle' | 'bottom', message: string, color: string) {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 1500,
+      position: position,
+      color: color
+    });
+
+    await toast.present();
+  }
+
   async saveAd() {
+    this.status.loading = true;
+
     this.ad.owner = this.AuthBaseService.getOwnerID();
     console.log(this.ad);
 
-    const itemCollection = collection(this.firestore, 'Ads');
-    const db = doc(collection(this.firestore, 'Ads'),'Ads');
+    // const itemCollection = collection(this.firestore, 'Ads');
+    const db = doc(collection(this.firestore, 'Ads'));
 
     
-    await setDoc(db, this.ad);
+    await setDoc(db, this.ad).then(
+      async (s) => {
+        this.status.loading = false;
+
+        await this.presentToast('bottom', "Your ad is created with success !", 'success');
+        this.ad = {
+          title: "",
+          description: "",
+          type: "",
+          photo: "",
+          owner: "",
+          created_at: new Date().toLocaleDateString()
+        };
+        
+      }, async (e) => {
+        console.log(e);
+        await this.presentToast('bottom', "An error is occured. Please retry now or later !", 'danger');
+
+        this.status.loading = false;
+      }
+    );
     
   }
 
