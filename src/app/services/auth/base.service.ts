@@ -12,10 +12,11 @@ export class BaseService {
   constructor(private router: Router) { }
 
 
+  // Verifier si user connecté
   isAuth() {
     const local = localStorage.getItem('auth-xxx-adv');
-    if (local) {
-      const token:Token = JSON.parse(local);
+    if (local) { // Verifier si local storage not null
+      const token:Token = JSON.parse(local); // transformation string to JSON
       if (token && token.token !== "") {
         return true;
       }
@@ -24,6 +25,8 @@ export class BaseService {
   }
 
 
+
+  // Obtenir Email 
   getOwnerID() {
     const local = localStorage.getItem('auth-xxx-adv');
     if (local) {
@@ -35,12 +38,14 @@ export class BaseService {
   }
 
 
+
+  // Déconnexion
   logout() {
     const local = localStorage.getItem('auth-xxx-adv');
-    if (local) {
-      localStorage.removeItem('auth-xxx-adv');
-      this.router.navigateByUrl('/');
-      signOut(getAuth());
+    if (local) { // Si localstorage existe
+      localStorage.removeItem('auth-xxx-adv'); // Suppression 
+      this.router.navigateByUrl('/'); //  redirection dehors
+      signOut(getAuth()); // Déconnexion Firebase
     }
   }
 }

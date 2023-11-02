@@ -6,6 +6,8 @@ import { BaseService } from './base.service';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class AuthorityGuard implements CanActivate {
 
   constructor(private AuthBaseService: BaseService, private router: Router) {}
@@ -14,9 +16,12 @@ export class AuthorityGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
+    // Vérifier si user connecté
     if (this.AuthBaseService.isAuth()) {
       return true;
     }    
+
+    // sinon redirection dehors
     this.router.navigateByUrl('/');
     return false;
   }

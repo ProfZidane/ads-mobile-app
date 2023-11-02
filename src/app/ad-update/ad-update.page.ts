@@ -32,21 +32,27 @@ export class AdUpdatePage implements OnInit {
   constructor(private route: ActivatedRoute, private firestore: Firestore, private toastController: ToastController, private location: Location) { }
 
   async ngOnInit() {
+
+    // Obtenir id de l'url
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
       this.idAds = id;
-      console.log(this.idAds);  
+      // console.log(this.idAds);  
       
-      await this.getAd(this.idAds);
+      await this.getAd(this.idAds); // obtenir annonce par id
     }
   }
 
   ionViewDidEnter() {
-    this.types = Types;
+    this.types = Types; // Stocker les types 
   }
 
+
+  // Obtenir les annonces par id
   async getAd(id: string) {
+    // Requete Firebase
     this.querySnapshot = await getDoc(doc(this.firestore, 'Ads', this.idAds));
+    // Assimilation variable
     this.Ad.title = this.querySnapshot.data().title;
     this.Ad.description = this.querySnapshot.data().description;
     this.Ad.owner = this.querySnapshot.data().owner;
@@ -56,6 +62,8 @@ export class AdUpdatePage implements OnInit {
         
   }
 
+
+  // Affichage d'1 toast message
   async presentToast(position: 'top' | 'middle' | 'bottom', message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -69,9 +77,13 @@ export class AdUpdatePage implements OnInit {
 
 
 
+
+  // Modifier une annonce
   async updateAd() {
     this.status.loading = true;
 
+
+    // Utilisation updateDoc de Firebase
     await updateDoc(doc(this.firestore, "Ads", this.idAds), {
       title: this.Ad.title,
       description: this.Ad.description,
@@ -81,15 +93,17 @@ export class AdUpdatePage implements OnInit {
     }).then(
       async (s) => {
         this.status.loading = false;
+        // Affichage du message
         await this.presentToast('bottom', "Your ad is updated with success !", "success");
 
         setTimeout(
-          () => { this.location.back() },
+          () => { this.location.back() }, // retour à la page arrière
           1000
         );
         
       }, async (e) => {
         this.status.loading = false;
+        // Affichage message d'erreur
         await this.presentToast('bottom', "An error is occured. Please retry now or later !", "danger");
       }
     );

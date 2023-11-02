@@ -38,10 +38,10 @@ types!:Array<string>;
 
 
   ionViewDidEnter() {
-    this.types = Types;
+    this.types = Types; // Stocker les types 
   }
 
-
+ // Affichage d'1 toast message
   async presentToast(position: 'top' | 'middle' | 'bottom', message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -53,20 +53,25 @@ types!:Array<string>;
     await toast.present();
   }
 
+
+  // Insertion d'annonce
   async saveAd() {
     this.status.loading = true;
 
+
+    // Récuperer l'id de l'user
     this.ad.owner = this.AuthBaseService.getOwnerID();
     console.log(this.ad);
 
     // const itemCollection = collection(this.firestore, 'Ads');
-    const db = doc(collection(this.firestore, 'Ads'));
+    const db = doc(collection(this.firestore, 'Ads')); // Récupérer la collection Firebase
 
-    
+    // Utilisation SetDoc de Firebase
     await setDoc(db, this.ad).then(
       async (s) => {
         this.status.loading = false;
 
+        // Affichage du message success
         await this.presentToast('bottom', "Your ad is created with success !", 'success');
         this.ad = {
           title: "",

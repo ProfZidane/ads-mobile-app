@@ -22,6 +22,14 @@ export class AdOwnerPage implements OnInit {
   };
 
   firestore = Inject(Firestore)
+  /**
+   * Cette page ne fonctionne pas très bien
+   * Problème avec la fonction where de firebase
+   * Mise à jour à Firebase (npm) -> Features
+   * @param route 
+   * @param auth 
+   * @param authService 
+   */
   constructor(private route: ActivatedRoute, private auth: Auth, private authService: BaseService,) { }
 
   ngOnInit() {
