@@ -1,4 +1,10 @@
+/**
+ * Model User
+ * Type de variable pour l'utilisateur
+ * 
+ */
+
 export class User {
-    email!: string;
-    password!: string;
+    email!: string; // email de l'user
+    password!: string; // password de l'user
 };

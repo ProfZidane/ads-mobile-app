@@ -32,12 +32,13 @@ constructor(private auth: Auth, private alertController: AlertController, privat
   }
 
 
+  // fonction affichage alert
   async presentAlert(header:string, message:string) {
     const alert = await this.alertController.create({
       header: header,
       subHeader: 'Important message',
       message: message,
-      buttons: [
+      buttons: [ // bouton OK avec fonction redirection login
         {
           text: "OK",
           handler: () => {
@@ -50,9 +51,14 @@ constructor(private auth: Auth, private alertController: AlertController, privat
     await alert.present();
   }
 
+
+  // fonction inscription
   async signUp() {
+
+    // Initialisation
     this.status.loading = true;
     this.status.error = false;
+
     await createUserWithEmailAndPassword(
       this.auth,
       this.data.email,
@@ -61,9 +67,13 @@ constructor(private auth: Auth, private alertController: AlertController, privat
       async (s) => {
         console.log(s);        
         this.status.loading = false;
+
+        // Affichage Message
         await this.presentAlert("Registery Alert", "Congratulations ! Your account was created. Log in now !")
       }, (e) => {
-        console.log(e);        
+        console.log(e);       
+        
+        // Affichage erreur + stop loading
         this.status.error = true;
         this.status.loading = false;
       }

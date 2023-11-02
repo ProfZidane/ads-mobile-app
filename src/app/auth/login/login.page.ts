@@ -23,6 +23,7 @@ export class LoginPage implements OnInit {
     password: ""
   };
 
+  // variable pour affichage du loading et erreurs 
   status = {
     loading: false,
     error: false
@@ -31,18 +32,21 @@ export class LoginPage implements OnInit {
   constructor(private auth: Auth, private router: Router, private AuthBaseService: BaseService) { }
 
   ngOnInit() {
-    // Verify if user is already connected
+    // Verifie si l'utilisateur est déja connecté  
+    // si connecté redirection home
     if (this.AuthBaseService.isAuth()) {
       this.router.navigateByUrl('/home');
     }    
   }
 
 
+  // fonction  connexion
   async login() {
-
+    // initialisation
     this.status.error = false;
     this.status.loading = true;
-
+    
+    // sign In 
     await signInWithEmailAndPassword(
        this.auth,
        this.data.email,
@@ -50,6 +54,8 @@ export class LoginPage implements OnInit {
     ).then(
       (s: any) => {
         console.log(s);
+
+        
         const data = {
           _id: s.user.uid,
           email: s.user.email,
@@ -58,12 +64,16 @@ export class LoginPage implements OnInit {
         };
 
         console.log(data);
-        
-        localStorage.setItem('auth-xxx-adv', JSON.stringify(data));
+        // insertion dans localstorage
+        // Doit être chiffrer plus tard
+        localStorage.setItem('auth-xxx-adv', JSON.stringify(data)); // json to string
 
+        // redirection home
         this.router.navigateByUrl('/home');
       }, (e) => {
         console.log(e);
+
+        // Activation error et désactivation loading
         this.status.error = true;
         this.status.loading = false;
       }

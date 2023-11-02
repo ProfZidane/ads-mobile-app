@@ -35,21 +35,27 @@ ownerstatus = false;
   }
 
   async ionViewDidEnter() {
+    // Récuperer lid de l'url
     const id = this.route.snapshot.paramMap.get("id");
     if (id) {
       this.idAds = id;
       console.log(this.idAds);  
       
-      await this.getAd(this.idAds);
+      await this.getAd(this.idAds); // Récupérer annonce par id
 
-      this.ownerstatus = this.isMine();
+      this.ownerstatus = this.isMine(); // Récuperer status auteur ou pas
     }
 
     
   }
 
+
+  // Récupérer annonce par id
   async getAd(id: string) {
+    // Ecriture de la requete
     this.querySnapshot = await getDoc(doc(this.firestore, 'Ads', this.idAds));
+
+    // Assimilation variable
     this.Ad.title = this.querySnapshot.data().title;
     this.Ad.description = this.querySnapshot.data().description;
     this.Ad.owner = this.querySnapshot.data().owner;
@@ -59,14 +65,18 @@ ownerstatus = false;
     
     console.log(this.Ad);
     
+    // Récupérer l'auteur
     this.getOwner(this.Ad.owner);
   }
 
 
+  // Récupérer l'auteur
    getOwner(email: string) {
     this.ownerName = email;
   }
 
+
+  // Affichage alert
   async presentAlert() {
     const alert = await this.alertController.create({
       header: 'Attention',
@@ -79,7 +89,7 @@ ownerstatus = false;
         {
           text: "Yes",
           handler: async () => {
-            await this.deleteAd(alert);
+            await this.deleteAd(alert); // Si YEs Supprimer l'annonce
           }
         }
       ],
@@ -89,6 +99,7 @@ ownerstatus = false;
   }
 
 
+  // Message Toast Affichage
   async presentToast(position: 'top' | 'middle' | 'bottom', message: string, color: string) {
     const toast = await this.toastController.create({
       message: message,
@@ -100,17 +111,21 @@ ownerstatus = false;
     await toast.present();
   }
 
+
+  // Supprimer annonce
   async deleteAd(alert: HTMLIonAlertElement) {
     await deleteDoc(doc(this.firestore, 'Ads', this.idAds)).then(
       (s) => {
         
-        alert.dismiss();
+        alert.dismiss(); // Fermer l'alert
 
+
+        // Affichage de message
         this.presentToast('bottom', "Ad deleted with success !", "success");
 
         setTimeout(
           () => {
-            this.location.back();            
+            this.location.back();      // Retour à la page arriere       
           },
           1000
         );
@@ -125,12 +140,16 @@ ownerstatus = false;
     );
   }
 
+
+  // Verifie si l'auteur de l'annonce est l'user connecté
   isMine() {
     const local = localStorage.getItem('auth-xxx-adv');
     if (local) {
       console.log(JSON.parse(local));
       const jsonOwner = JSON.parse(local);
 
+
+      // Verifie si l'auteur annonce égale à l'user connecté (dans le localstorage)
       if (jsonOwner.email === this.ownerName) {
         return true;
       }
